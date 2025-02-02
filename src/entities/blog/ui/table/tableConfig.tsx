@@ -1,5 +1,5 @@
-import { Button, Stack } from '@mui/material';
 import { Blog } from 'entities/blog';
+import { Actions } from 'entities/blog/ui/table/cells/actions.tsx';
 import { Column } from 'shared/ui/listing';
 
 interface Options {
@@ -69,26 +69,7 @@ export function blogsTableConfig(options: Options): Array<Column<Blog>> {
       bodyCellProps: {
         align: 'center',
       },
-      renderCell: entity => (
-        <Stack direction="row" gap="0.5rem" justifyContent="center">
-          <Button
-            size="small"
-            onClick={() => {
-              options.handleUpdate(entity.id);
-            }}>
-            Edit
-          </Button>
-
-          <Button
-            size="small"
-            color="error"
-            onClick={() => {
-              options.handleDelete(entity.id);
-            }}>
-            Remove
-          </Button>
-        </Stack>
-      ),
+      renderCell: entity => <Actions blogId={entity.id} {...options} />,
     },
   ];
 }

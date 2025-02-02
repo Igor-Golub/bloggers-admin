@@ -1,3 +1,5 @@
+import { Add } from '@mui/icons-material';
+import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { BaseTableEntity, InputTypes, Listing } from 'shared/ui/listing';
 import { Blog, useBlog } from '../../model';
@@ -18,6 +20,11 @@ export function BlogsTable() {
       listingName="Blogs"
       loading={isLoading}
       renderData={blogs}
+      listingActions={
+        <Button startIcon={<Add />} variant="contained" color="inherit">
+          Add
+        </Button>
+      }
       tableDataAdapter={(entity, index) => ({
         ...entity,
         renderIndex: index,
