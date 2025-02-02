@@ -13,7 +13,7 @@ export function NavigationMenu({ isOpen, onClose }: Props) {
       <Box sx={{ width: 250 }} role="presentation" onClick={onClose}>
         <List>
           {navigationConfig.map(({ path, label }) => (
-            <ListItem component={Link} to={path}>
+            <ListItem key={path} component={Link} to={path}>
               <ListItemText primary={label} />
             </ListItem>
           ))}

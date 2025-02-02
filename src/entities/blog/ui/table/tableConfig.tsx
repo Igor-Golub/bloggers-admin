@@ -12,29 +12,65 @@ export function blogsTableConfig(options: Options): Array<Column<Blog>> {
     {
       dataKey: 'name',
       header: 'Name',
+      headerCellProps: {
+        align: 'center',
+      },
+      bodyCellProps: {
+        align: 'center',
+      },
     },
     {
       dataKey: 'description',
       header: 'Description',
+      headerCellProps: {
+        align: 'center',
+      },
+      bodyCellProps: {
+        align: 'center',
+      },
     },
     {
       dataKey: 'createdAt',
       header: 'Created at',
+      headerCellProps: {
+        align: 'center',
+      },
+      bodyCellProps: {
+        align: 'center',
+      },
     },
     {
       dataKey: 'websiteUrl',
       header: 'Website URL',
+      headerCellProps: {
+        align: 'center',
+      },
+      bodyCellProps: {
+        align: 'center',
+      },
     },
     {
       dataKey: 'isMembership',
       header: 'Membership',
+      headerCellProps: {
+        align: 'center',
+      },
+      bodyCellProps: {
+        align: 'center',
+      },
       renderCell: ({ isMembership }) => <>{isMembership ? 'Yes' : 'No'}</>,
     },
     {
       header: 'Actions',
       dataKey: 'actions',
+      headerCellProps: {
+        align: 'center',
+      },
+      bodyCellProps: {
+        align: 'center',
+      },
       renderCell: entity => (
-        <Stack direction="row" gap="0.5rem">
+        <Stack direction="row" gap="0.5rem" justifyContent="center">
           <Button
             size="small"
             onClick={() => {
