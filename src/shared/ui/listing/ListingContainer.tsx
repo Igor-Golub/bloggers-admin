@@ -1,22 +1,22 @@
-import { PropsWithChildren } from "react";
-import { Box } from "@mui/material";
+import { Box } from '@mui/material';
+import { PropsWithChildren } from 'react';
 
 export const ListingContainer = ({ children }: PropsWithChildren) => {
   return (
     <Box
       sx={{
-        gap: "1rem",
-        display: "flex",
-        flexDirection: "column",
+        height: '100%',
+        gap: '1rem',
+        display: 'flex',
+        flexDirection: 'column',
 
-        "& .listingName": {
-          display: "flex",
-          alignItems: "center",
-          flexDirection: "row",
-          justifyContent: "space-between",
+        '& .listingName': {
+          display: 'flex',
+          alignItems: 'center',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
         },
-      }}
-    >
+      }}>
       {children}
     </Box>
   );

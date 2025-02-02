@@ -19,7 +19,7 @@ export const TableManagerContextProvider = <TableEntity extends BaseTableEntity>
 
   const [pagination, setPagination] = useState<Pagination>({
     page: 0,
-    limit: 5,
+    limit: 10,
     total: tableData.length,
   });
 

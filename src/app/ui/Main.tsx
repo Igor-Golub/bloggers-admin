@@ -1,15 +1,20 @@
-import { Container, CssBaseline } from '@mui/material';
-import { PropsWithChildren } from 'react';
+import { useState } from 'react';
+import { Outlet } from 'react-router-dom';
+import { Header } from 'app/ui/Header.tsx';
+import { NavigationMenu } from 'app/ui/NavigationMenu.tsx';
+import { MainLayout } from './MainLayout.tsx';
 
-export const Main = ({ children }: PropsWithChildren) => (
-  <>
-    <CssBaseline />
+export function Main() {
+  const [isDroverOpen, setIsDroverOpen] = useState(false);
 
-    <Container
-      component="main"
-      maxWidth={false}
-      sx={{ height: '100vh', width: '100vw', padding: '1rem', margin: 0 }}>
-      {children}
-    </Container>
-  </>
-);
+  const handleOpen = () => setIsDroverOpen(true);
+  const handleClose = () => setIsDroverOpen(false);
+
+  return (
+    <MainLayout
+      header={<Header onOpen={handleOpen} />}
+      navigationMenu={<NavigationMenu isOpen={isDroverOpen} onClose={handleClose} />}
+      content={<Outlet />}
+    />
+  );
+}
