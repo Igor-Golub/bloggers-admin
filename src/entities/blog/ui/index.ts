@@ -1,1 +1,1 @@
-export { Table as BlogsTable } from './table.tsx'
+export { BlogsTable } from './table.tsx'
