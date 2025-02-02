@@ -1,0 +1,1 @@
+export { Table as BlogsTable } from './table.tsx'
