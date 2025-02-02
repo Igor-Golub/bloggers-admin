@@ -1,2 +1,3 @@
 export * from './api';
-export type { Blog } from './schemas';
+export { useBlog } from './hooks/useBlog.ts';
+export type { Blog, CreateBlogBody, UpdateBlogBody } from './schemas';

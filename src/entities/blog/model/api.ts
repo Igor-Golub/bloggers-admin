@@ -1,6 +1,6 @@
 import { baseApi } from 'shared/api/baseApi';
 import { ListResponse } from 'shared/types';
-import { Blog, blogSchema } from './schemas';
+import { Blog, CreateBlogBody, UpdateBlogBody, blogSchema } from './schemas';
 
 interface Params {
   sortBy: string;
@@ -10,12 +10,12 @@ interface Params {
 }
 
 export const blogApi = baseApi.injectEndpoints({
-  endpoints: ({ query }) => ({
+  endpoints: ({ query, mutation }) => ({
     blogsList: query<ListResponse<Blog>, Partial<Params>>({
-      query: (params) => ({
+      query: params => ({
         url: 'sa/blogs',
         method: 'GET',
-        params
+        params,
       }),
     }),
     byId: query<Blog, string>({
@@ -23,9 +23,29 @@ export const blogApi = baseApi.injectEndpoints({
         url: `sa/blogs/${id}`,
         method: 'GET',
       }),
-      transformResponse: (response) => {
-        return blogSchema.parse(response)
-      }
+      transformResponse: response => {
+        return blogSchema.parse(response);
+      },
+    }),
+    create: mutation<Blog, CreateBlogBody>({
+      query: body => ({
+        url: `sa/blogs`,
+        method: 'POST',
+        body,
+      }),
+    }),
+    update: mutation<Blog, Params & UpdateBlogBody>({
+      query: ({ id, ...body }) => ({
+        url: `sa/blogs/${id}`,
+        method: 'PUT',
+        body,
+      }),
+    }),
+    delete: mutation<void, string>({
+      query: id => ({
+        url: `sa/blogs/${id}`,
+        method: 'DELETE',
+      }),
     }),
   }),
   overrideExisting: true,

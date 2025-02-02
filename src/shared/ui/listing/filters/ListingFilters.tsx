@@ -7,15 +7,10 @@ import {
   Stack,
   TextField,
   Typography,
-} from "@mui/material";
-import { useFiltersManagerContext } from "../contexts";
-import {
-  BaseTableEntity,
-  FilterComponentsMapper,
-  FiltersConfiguration,
-  InputTypes,
-} from "../types.ts";
-import { useMemo } from "react";
+} from '@mui/material';
+import { useMemo } from 'react';
+import { useFiltersManagerContext } from '../contexts';
+import { BaseTableEntity, FilterComponentsMapper, FiltersConfiguration, InputTypes } from '../types.ts';
 
 interface Props<TableEntity extends BaseTableEntity> {
   configuration: FiltersConfiguration<TableEntity>[];
@@ -33,8 +28,8 @@ export const ListingFilters = <TableEntity extends BaseTableEntity>({
           fullWidth
           size="small"
           placeholder="Enter value"
-          value={filtersValues[filterValue] ?? ""}
-          onChange={(event) => {
+          value={filtersValues[filterValue] ?? ''}
+          onChange={event => {
             handleChangeFilters(filterValue, event.target.value);
           }}
           {...inputProps}
@@ -46,12 +41,11 @@ export const ListingFilters = <TableEntity extends BaseTableEntity>({
           size="small"
           displayEmpty
           labelId="selectFilter"
-          value={filtersValues[filterValue] ?? ""}
-          onChange={(event) => {
+          value={filtersValues[filterValue] ?? ''}
+          onChange={event => {
             handleChangeFilters(filterValue, event.target.value);
           }}
-          {...inputProps}
-        >
+          {...inputProps}>
           <MenuItem value="">
             <em>Not selected</em>
           </MenuItem>
@@ -79,11 +73,11 @@ export const ListingFilters = <TableEntity extends BaseTableEntity>({
         />
       ),
     }),
-    [filtersValues],
+    [filtersValues]
   );
 
   return (
-    <Stack>
+    <Stack gap="0.5rem">
       <Typography component="span" variant="subtitle1">
         Filters
       </Typography>

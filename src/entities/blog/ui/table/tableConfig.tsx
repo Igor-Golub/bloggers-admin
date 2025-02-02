@@ -1,34 +1,58 @@
-import { Column } from 'shared/ui/listing';
-import { Blog } from 'entities/blog';
 import { Button, Stack } from '@mui/material';
+import { Blog } from 'entities/blog';
+import { Column } from 'shared/ui/listing';
 
-export function blogsTableConfig(): Array<Column<Blog>> {
+interface Options {
+  handleUpdate: (blogId: string) => void;
+  handleDelete: (blogId: string) => void;
+}
+
+export function blogsTableConfig(options: Options): Array<Column<Blog>> {
   return [
     {
       dataKey: 'name',
-      header: 'Name'
+      header: 'Name',
     },
     {
       dataKey: 'description',
-      header: 'Description'
+      header: 'Description',
     },
     {
       dataKey: 'createdAt',
-      header: 'Created at'
+      header: 'Created at',
     },
     {
       dataKey: 'websiteUrl',
-      header: 'Website URL'
+      header: 'Website URL',
     },
     {
-      dataKey:'isMembership',
+      dataKey: 'isMembership',
       header: 'Membership',
-      renderCell: ({ isMembership }) => <>{isMembership ? 'Yes' : 'No'}</>
+      renderCell: ({ isMembership }) => <>{isMembership ? 'Yes' : 'No'}</>,
     },
     {
       header: 'Actions',
       dataKey: 'actions',
-      renderCell: () => <Stack direction='row' gap='0.5rem'><Button size='small'>Edit</Button><Button size='small' color='error'>Remove</Button></Stack>
-    }
-  ]
+      renderCell: entity => (
+        <Stack direction="row" gap="0.5rem">
+          <Button
+            size="small"
+            onClick={() => {
+              options.handleUpdate(entity.id);
+            }}>
+            Edit
+          </Button>
+
+          <Button
+            size="small"
+            color="error"
+            onClick={() => {
+              options.handleDelete(entity.id);
+            }}>
+            Remove
+          </Button>
+        </Stack>
+      ),
+    },
+  ];
 }

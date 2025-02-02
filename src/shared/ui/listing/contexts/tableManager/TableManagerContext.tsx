@@ -68,7 +68,7 @@ export const TableManagerContextProvider = <TableEntity extends BaseTableEntity>
         {} as Record<string, TableEntity[]>
       );
 
-      return Object.entries(groupedTableData).reduce<TableEntity[]>((acc, [_, groupData]) => {
+      return Object.values(groupedTableData).reduce<TableEntity[]>((acc, groupData) => {
         acc.push(...groupData);
         return acc;
       }, []);
@@ -103,7 +103,7 @@ export const TableManagerContextProvider = <TableEntity extends BaseTableEntity>
       tableData: tableDataWithGroup,
       handleChangeSelectedRows: setSelectedRows,
     }),
-    [pagination, tableDataWithGroup, selectedRows]
+    [pagination, selectedRows, handleChangePage, handleChangeRowsPerPage, tableDataWithGroup]
   );
 
   return <TableManagerContext.Provider value={value}>{children}</TableManagerContext.Provider>;

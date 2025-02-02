@@ -60,7 +60,7 @@ export const ListingTable = <TableEntity extends BaseTableEntity>({
   if (loading) return <>Loading</>;
 
   return (
-    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+    <Paper elevation={2} sx={{ width: '100%', overflow: 'hidden' }}>
       <TableContainer style={{ height: '100%' }}>
         <Table stickyHeader>
           <TableHeader columns={innerColumns} columnsConfigurator={columnsConfigurator} />

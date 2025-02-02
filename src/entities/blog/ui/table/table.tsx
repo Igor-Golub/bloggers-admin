@@ -1,17 +1,36 @@
-import { Listing, BaseTableEntity } from 'shared/ui/listing';
-import { Blog, blogApi } from '../../model';
+import { BaseTableEntity, InputTypes, Listing } from 'shared/ui/listing';
+import { Blog, useBlog } from '../../model';
 import { blogsTableConfig } from './tableConfig.tsx';
 
 export function BlogsTable() {
-  const { data } = blogApi.useBlogsListQuery({});
+  const { blogs, isLoading, handleDelete, handleUpdate } = useBlog();
 
-  const columns = blogsTableConfig()
+  const columns = blogsTableConfig({
+    handleDelete,
+    handleUpdate,
+  });
 
-  return <Listing<Blog, Blog & BaseTableEntity>
-    columns={columns}
-    renderData={data?.items ?? []}
-    listingName="Blogs"
-    tableDataAdapter={(entity, index) => ({
-      ...entity, renderIndex: index
-    })} />;
+  return (
+    <Listing<Blog, Blog & BaseTableEntity>
+      columns={columns}
+      listingName="Blogs"
+      loading={isLoading}
+      renderData={blogs}
+      tableDataAdapter={(entity, index) => ({
+        ...entity,
+        renderIndex: index,
+      })}
+      filtersConfiguration={[
+        {
+          fields: ['name'],
+          filterValue: 'search',
+          inputType: InputTypes.Text,
+          inputProps: {
+            label: 'Search by name',
+            placeholder: 'Search by name',
+          },
+        },
+      ]}
+    />
+  );
 }

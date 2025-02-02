@@ -8,12 +8,7 @@ export const Main = ({ children }: PropsWithChildren) => (
     <Container
       component="main"
       maxWidth={false}
-      sx={{
-        height: '100vh',
-        width: '100vw',
-        padding: 0,
-        margin: 0,
-      }}>
+      sx={{ height: '100vh', width: '100vw', padding: '1rem', margin: 0 }}>
       {children}
     </Container>
   </>
