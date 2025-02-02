@@ -6,7 +6,7 @@ export const blogSchema = z.object({
   createdAt: z.string(),
   websiteUrl: z.string(),
   description: z.string(),
-  isMembership: z.string(),
+  isMembership: z.boolean(),
 });
 
 export type Blog = z.infer<typeof blogSchema>;

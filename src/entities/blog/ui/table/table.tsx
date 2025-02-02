@@ -1,8 +1,10 @@
+import { useNavigate } from 'react-router-dom';
 import { BaseTableEntity, InputTypes, Listing } from 'shared/ui/listing';
 import { Blog, useBlog } from '../../model';
 import { blogsTableConfig } from './tableConfig.tsx';
 
 export function BlogsTable() {
+  const navigator = useNavigate();
   const { blogs, isLoading, handleDelete, handleUpdate } = useBlog();
 
   const columns = blogsTableConfig({
@@ -20,6 +22,9 @@ export function BlogsTable() {
         ...entity,
         renderIndex: index,
       })}
+      onRowClick={row => {
+        navigator(`/blogs/${row.id}`);
+      }}
       filtersConfiguration={[
         {
           fields: ['name'],
