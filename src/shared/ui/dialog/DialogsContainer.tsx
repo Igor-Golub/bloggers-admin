@@ -1,6 +1,5 @@
 import { Fragment, ReactNode } from 'react';
-import { useAppSelector } from 'shared/hooks';
-import { selectOpenedDialogs } from 'shared/ui/dialog/model/slice.ts';
+import { useSystemDialog } from './context/useSystemDialog.ts';
 import { DialogTypes } from './types.ts';
 
 interface Props {
@@ -8,7 +7,7 @@ interface Props {
 }
 
 export function DialogsContainer({ dialogs }: Props) {
-  const openedDialogs = useAppSelector(selectOpenedDialogs);
+  const openedDialogs = useSystemDialog();
 
   return (
     <>

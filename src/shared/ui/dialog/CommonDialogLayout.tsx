@@ -1,34 +1,44 @@
 import { Close } from '@mui/icons-material';
-import { Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Stack } from '@mui/material';
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogProps,
+  DialogTitle,
+  IconButton,
+  Stack,
+} from '@mui/material';
 import { ReactNode } from 'react';
-import { useDialog } from './hooks/useDialog.ts';
-import { DialogTypes, Dialogs } from './types.ts';
+import { useDialog } from './context/useDialog.ts';
+import { DialogTypes } from './types.ts';
 
-interface Props<Key extends DialogTypes> {
+interface Props extends Omit<DialogProps, 'onClose' | 'open' | 'title' | 'content'> {
   type: DialogTypes;
-  title: (data: Dialogs[Key]['data']) => ReactNode;
-  content: (data: Dialogs[Key]['data']) => ReactNode;
-  actions: (data: Dialogs[Key]['data']) => ReactNode;
+  title?: ReactNode;
+  content?: ReactNode;
+  actions?: ReactNode;
 }
 
-export function CommonDialogLayout<Key extends DialogTypes>({ type, title, content, actions }: Props<Key>) {
-  const { isOpen, data, onClose } = useDialog(type);
+export function CommonDialogLayout({ type, title, content, actions, ...other }: Props) {
+  const { isOpen, onClose } = useDialog(type);
 
   return (
-    <Dialog open={isOpen} fullWidth maxWidth="md" onClose={onClose}>
-      <Stack
-        sx={{ paddingRight: '1.5rem' }}
-        direction="row"
-        alignItems="center"
-        justifyContent="space-between">
-        <DialogTitle>{title(data)}</DialogTitle>
-        <IconButton onClick={onClose}>
-          <Close />
-        </IconButton>
-      </Stack>
+    <Dialog open={isOpen} fullWidth maxWidth="md" onClose={onClose} {...other}>
+      {title && (
+        <Stack
+          sx={{ paddingRight: '1rem' }}
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between">
+          <DialogTitle>{title}</DialogTitle>
+          <IconButton size="small" onClick={onClose}>
+            <Close />
+          </IconButton>
+        </Stack>
+      )}
 
-      <DialogContent>{content(data)}</DialogContent>
-      <DialogActions>{actions(data)}</DialogActions>
+      {!!content && <DialogContent>{content}</DialogContent>}
+      {!!actions && <DialogActions>{actions}</DialogActions>}
     </Dialog>
   );
 }

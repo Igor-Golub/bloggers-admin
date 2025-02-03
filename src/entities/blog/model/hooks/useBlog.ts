@@ -1,16 +1,27 @@
 import { blogApi } from 'entities/blog';
+import { DialogTypes, useDialog } from 'shared/ui/dialog';
+import { useNotification } from 'shared/ui/notification';
 
 export function useBlog() {
-  const { data, isLoading } = blogApi.useBlogsListQuery({});
+  const { onShow } = useNotification();
+  const { onOpen } = useDialog(DialogTypes.CommonConfirmation);
 
+  const { data, isLoading } = blogApi.useBlogsListQuery({});
   const [onDelete] = blogApi.useDeleteMutation({});
 
-  const handleDelete = async (id: string) => {
-    try {
-      await onDelete(id);
-    } catch (error) {
-      console.error(error);
-    }
+  const handleDelete = (id: string) => {
+    onOpen({
+      confirmationText: 'Are you want to Delete blog?',
+      onConfirm: async () => {
+        try {
+          await onDelete(id);
+          onShow({ message: 'Blog deleted!' });
+        } catch (error) {
+          onShow({ message: 'Blog not deleted!', type: 'error' });
+          console.error(error);
+        }
+      },
+    });
   };
 
   const handleUpdate = (id: string) => {

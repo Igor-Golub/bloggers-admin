@@ -1,14 +1,15 @@
-import { CreateUpdateBlogData } from 'entities/blog/types.ts';
-
 export enum DialogTypes {
   CreateUpdateBlog = 'createUpdateBlog',
+  CommonLoading = 'commonLoading',
+  CommonConfirmation = 'commonConfirmation',
 }
 
-type DialogState<Data> = {
+export type DialogState<Data> = {
   isOpen: boolean;
   data: Data | null;
 };
 
-export type Dialogs = {
-  [DialogTypes.CreateUpdateBlog]: DialogState<CreateUpdateBlogData>;
-};
+export interface ConfirmationDialogData {
+  confirmationText: string;
+  onConfirm: () => Promise<void>;
+}
