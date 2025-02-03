@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import { Header } from 'app/ui/Header.tsx';
-import { NavigationMenu } from 'app/ui/NavigationMenu.tsx';
+import { Header } from './Header.tsx';
 import { MainLayout } from './MainLayout.tsx';
+import { NavigationMenu } from './NavigationMenu.tsx';
 
 export function Main() {
   const [isDroverOpen, setIsDroverOpen] = useState(false);

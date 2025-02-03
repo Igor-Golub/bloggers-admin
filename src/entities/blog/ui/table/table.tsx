@@ -1,12 +1,16 @@
 import { Add } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { DialogTypes, useDialog } from 'shared/ui/dialog';
 import { BaseTableEntity, InputTypes, Listing } from 'shared/ui/listing';
 import { Blog, useBlog } from '../../model';
 import { blogsTableConfig } from './tableConfig.tsx';
 
 export function BlogsTable() {
   const navigator = useNavigate();
+
+  const { onOpen: handleOpenCreateBlogDialog } = useDialog(DialogTypes.CreateUpdateBlog);
+
   const { blogs, isLoading, handleDelete, handleUpdate } = useBlog();
 
   const columns = blogsTableConfig({
@@ -21,7 +25,11 @@ export function BlogsTable() {
       loading={isLoading}
       renderData={blogs}
       listingActions={
-        <Button startIcon={<Add />} variant="contained" color="inherit">
+        <Button
+          color="inherit"
+          variant="contained"
+          startIcon={<Add />}
+          onClick={() => handleOpenCreateBlogDialog()}>
           Add
         </Button>
       }
