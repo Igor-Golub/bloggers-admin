@@ -13,12 +13,13 @@ export function useBlog() {
     onOpen({
       confirmationText: 'Are you want to Delete blog?',
       onConfirm: async () => {
-        try {
-          await onDelete(id);
-          onShow({ message: 'Blog deleted!' });
-        } catch (error) {
+        const result = await onDelete(id);
+
+        if ('error' in result) {
           onShow({ message: 'Blog not deleted!', type: 'error' });
-          console.error(error);
+          console.error(result.error);
+        } else {
+          onShow({ message: 'Blog deleted!' });
         }
       },
     });

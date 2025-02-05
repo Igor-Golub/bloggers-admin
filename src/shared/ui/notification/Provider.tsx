@@ -12,6 +12,7 @@ export function Provider() {
       {notifications.map(({ id, type, duration, message }) => (
         <Snackbar
           open
+          key={id}
           autoHideDuration={duration}
           onClose={() => onHide(id)}
           anchorOrigin={{ vertical: 'top', horizontal: 'right' }}>
@@ -19,10 +20,7 @@ export function Provider() {
             severity={type}
             variant="filled"
             onClose={() => onHide(id)}
-            sx={{
-              width: '100%',
-              minWidth: '20rem',
-            }}>
+            sx={{ width: '100%', minWidth: '20rem' }}>
             {message}
           </Alert>
         </Snackbar>

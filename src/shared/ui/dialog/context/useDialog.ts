@@ -12,6 +12,6 @@ export function useDialog<Key extends DialogTypes>(type: Key) {
     isOpen: context.state[type]?.isOpen ?? false,
     onClose: () => context.onClose(type),
     data: (context.state[type]?.data as Dialogs[Key]['data']) ?? null,
-    onOpen: (data: Dialogs[Key]['data']) => context.onOpen(type, data),
+    onOpen: (data?: Dialogs[Key]['data']) => context.onOpen(type, data),
   };
 }

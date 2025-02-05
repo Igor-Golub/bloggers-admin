@@ -12,7 +12,7 @@ export function useNotification() {
           ...notification,
           id: Date.now().toString(),
           type: notification?.type ?? 'success',
-          duration: notification?.duration ?? 3000,
+          duration: notification?.duration ?? 2000,
         },
       })
     );

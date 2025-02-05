@@ -57,15 +57,13 @@ export const ListingTable = <TableEntity extends BaseTableEntity>({
       .filter(({ dataKey }) => columnsValues?.[dataKey] ?? true);
   }, [onSelect, columns, withNumber, columnsValues]);
 
-  if (loading) return <>Loading</>;
-
   return (
     <Paper elevation={2} sx={{ flex: 1, overflowX: 'auto', border: '1px solid gray' }}>
       <TableContainer sx={{ height: 'calc(100% - 64px)' }}>
         <Table stickyHeader>
           <TableHeader columns={innerColumns} columnsConfigurator={columnsConfigurator} />
 
-          <TableBody columns={innerColumns} onRowClick={onRowClick} />
+          <TableBody loading={loading} columns={innerColumns} onRowClick={onRowClick} />
         </Table>
       </TableContainer>
 

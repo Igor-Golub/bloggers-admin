@@ -17,6 +17,7 @@ export const blogApi = baseApi.injectEndpoints({
         method: 'GET',
         params,
       }),
+      providesTags: ['Blog'],
     }),
     byId: query<Blog, string>({
       query: id => ({
@@ -46,6 +47,7 @@ export const blogApi = baseApi.injectEndpoints({
         url: `sa/blogs/${id}`,
         method: 'DELETE',
       }),
+      invalidatesTags: ['Blog'],
     }),
   }),
   overrideExisting: true,
