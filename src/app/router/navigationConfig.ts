@@ -1,1 +1,4 @@
-export const navigationConfig = [{ path: '/blogs', label: 'Blogs' }];
+export const navigationConfig = [
+  { path: '/blogs', label: 'Blogs' },
+  { path: '/posts', label: 'Posts' },
+];

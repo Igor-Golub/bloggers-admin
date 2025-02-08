@@ -1,6 +1,6 @@
-import { blogApi } from 'entities/blog';
 import { DialogTypes, useDialog } from 'shared/ui/dialog';
 import { useNotification } from 'shared/ui/notification';
+import { blogApi } from '../api';
 
 export function useBlog() {
   const { onShow } = useNotification();
