@@ -1,27 +1,38 @@
-import { PropsWithChildren, useCallback, useMemo, useState } from 'react';
-import { BaseTableEntity, FiltersConfiguration, Pagination } from '../../types.ts';
+import { PropsWithChildren, useCallback, useEffect, useMemo, useState } from 'react';
+import { BaseTableEntity, FiltersConfiguration, Pagination, PaginationActions } from '../../types.ts';
 import { useFiltersManagerContext } from '../filtersManager';
 import { tableManagerContext as TableManagerContext } from './tableManagerContext.ts';
 
-interface Props<TableEntity extends BaseTableEntity> {
+interface Props<TableEntity extends BaseTableEntity> extends Partial<PaginationActions> {
   tableData: TableEntity[];
+  pagination?: Pagination;
   groupBy?: keyof TableEntity;
   filtersConfiguration?: FiltersConfiguration<TableEntity>[];
 }
 
 export const TableManagerContextProvider = <TableEntity extends BaseTableEntity>({
-  children,
   groupBy,
+  children,
   tableData,
+  pagination,
+  onPaginationChanged,
   filtersConfiguration,
 }: PropsWithChildren<Props<TableEntity>>) => {
   const { filtersValues } = useFiltersManagerContext();
 
-  const [pagination, setPagination] = useState<Pagination>({
-    page: 0,
-    limit: 10,
-    total: tableData.length,
-  });
+  const [paginationState, setPaginationState] = useState<Pagination>(
+    pagination ?? {
+      page: 0,
+      pageSize: 10,
+      totalCount: tableData.length,
+    }
+  );
+
+  useEffect(() => {
+    if (pagination) {
+      setPaginationState(pagination);
+    }
+  }, [pagination]);
 
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
 
@@ -74,36 +85,46 @@ export const TableManagerContextProvider = <TableEntity extends BaseTableEntity>
       }, []);
     }
 
-    setPagination(prev => ({ page: 0, limit: prev.limit, total: filteredTableData.length }));
+    setPaginationState(prev => ({ page: 0, pageSize: prev.pageSize, totalCount: filteredTableData.length }));
 
     return filteredTableData;
   }, [tableData, groupBy, filtersValues, filtersConfiguration]);
 
-  const handleChangePage = useCallback((nextValue: number) => {
-    setPagination(prev => ({
-      ...prev,
-      page: nextValue,
-    }));
-  }, []);
+  const handleChangePage = useCallback(
+    (nextValue: number) => {
+      setPaginationState(prev => ({
+        ...prev,
+        page: nextValue,
+      }));
 
-  const handleChangeRowsPerPage = useCallback((nextValue: number) => {
-    setPagination(prev => ({
-      ...prev,
-      page: 0,
-      limit: nextValue,
-    }));
-  }, []);
+      if (typeof onPaginationChanged === 'function') onPaginationChanged({ page: nextValue });
+    },
+    [onPaginationChanged]
+  );
+
+  const handleChangeRowsPerPage = useCallback(
+    (nextValue: number) => {
+      setPaginationState(prev => ({
+        ...prev,
+        page: 0,
+        limit: nextValue,
+      }));
+
+      if (typeof onPaginationChanged === 'function') onPaginationChanged({ pageSize: nextValue });
+    },
+    [onPaginationChanged]
+  );
 
   const value = useMemo(
     () => ({
-      ...pagination,
+      ...paginationState,
       selectedRows,
       handleChangePage,
       handleChangeRowsPerPage,
       tableData: tableDataWithGroup,
       handleChangeSelectedRows: setSelectedRows,
     }),
-    [pagination, selectedRows, handleChangePage, handleChangeRowsPerPage, tableDataWithGroup]
+    [paginationState, selectedRows, handleChangePage, handleChangeRowsPerPage, tableDataWithGroup]
   );
 
   return <TableManagerContext.Provider value={value}>{children}</TableManagerContext.Provider>;

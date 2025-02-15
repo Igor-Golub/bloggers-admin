@@ -1,10 +1,12 @@
 import { Add } from '@mui/icons-material';
 import { Button } from '@mui/material';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DialogTypes, useDialog } from 'shared/ui/dialog';
 import { BaseTableEntity, InputTypes, Listing } from 'shared/ui/listing';
+import { Pagination } from 'shared/ui/listing/types.ts';
 import { useBlog } from '../../hooks/useBlog';
-import { Blog } from '../../model';
+import { Blog, blogApi } from '../../model';
 import { blogsTableConfig } from './tableConfig.tsx';
 
 export function BlogsTable() {
@@ -12,7 +14,14 @@ export function BlogsTable() {
 
   const { onOpen: handleOpenCreateBlogDialog } = useDialog(DialogTypes.CreateUpdateBlog);
 
-  const { blogs, isLoading, handleDelete, handleUpdate } = useBlog();
+  const [pagination, setPagination] = useState<Pagination>({ page: 1, limit: 10, total: 0 });
+
+  const { data, isLoading } = blogApi.useBlogsListQuery({
+    pageSize: pagination.limit,
+    pageNumber: pagination.page,
+  });
+
+  const { handleDelete, handleUpdate } = useBlog();
 
   const columns = blogsTableConfig({
     handleDelete,
@@ -24,7 +33,11 @@ export function BlogsTable() {
       columns={columns}
       listingName="Blogs"
       loading={isLoading}
-      renderData={blogs}
+      pagination={pagination}
+      renderData={data?.items ?? []}
+      onPaginationChanged={nextValue => {
+        setPagination(prev => ({ ...prev, ...nextValue }));
+      }}
       listingActions={
         <Button
           color="inherit"

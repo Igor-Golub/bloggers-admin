@@ -5,21 +5,32 @@ import { Providers } from './contexts';
 import { ListingFilters } from './filters/ListingFilters';
 import { ListingTable } from './table/ListingTable';
 import { TableNameWithActions } from './table/TableNameWithActions';
-import { BaseTableEntity, Column, ColumnsConfiguration, FiltersConfiguration } from './types';
+import {
+  BaseTableEntity,
+  Column,
+  ColumnsConfiguration,
+  FiltersConfiguration,
+  Pagination,
+  PaginationActions,
+} from './types';
 
-interface Props<Entity, TableEntity extends BaseTableEntity> {
+interface Actions<TableEntity extends BaseTableEntity> extends PaginationActions {
+  onRowClick: (row: TableEntity) => void;
+  onSelect: (selectedRowId: string, selectedRows: string[]) => void;
+}
+
+interface Props<Entity, TableEntity extends BaseTableEntity> extends Partial<Actions<TableEntity>> {
+  loading?: boolean;
   listingName?: string;
   renderData: Entity[];
   withNumber?: boolean;
-  loading?: boolean;
+  pagination?: Pagination;
   listingActions?: ReactNode;
   groupBy?: keyof TableEntity;
   columns: Column<TableEntity>[];
-  onRowClick?: (row: TableEntity) => void;
   columnsConfigurator?: ColumnsConfiguration;
   filtersConfiguration?: FiltersConfiguration<TableEntity>[];
   tableDataAdapter: (entity: Entity, index: number) => TableEntity;
-  onSelect?: (selectedRowId: string, selectedRows: string[]) => void;
 }
 
 export const Listing = <Entity extends any, TableEntity extends BaseTableEntity>({
@@ -29,9 +40,11 @@ export const Listing = <Entity extends any, TableEntity extends BaseTableEntity>
   renderData,
   onRowClick,
   listingName,
+  pagination,
   loading = false,
   listingActions,
   tableDataAdapter,
+  onPaginationChanged,
   columnsConfigurator,
   withNumber = false,
   filtersConfiguration,
@@ -42,6 +55,8 @@ export const Listing = <Entity extends any, TableEntity extends BaseTableEntity>
     <Providers<TableEntity>
       groupBy={groupBy}
       tableData={tableData}
+      pagination={pagination}
+      onPaginationChanged={onPaginationChanged}
       filtersConfiguration={filtersConfiguration}>
       <ListingContainer>
         <TableNameWithActions listingName={listingName} listingActions={listingActions} />
