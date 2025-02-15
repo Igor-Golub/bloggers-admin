@@ -1,5 +1,6 @@
 export enum DialogTypes {
   CreateUpdateBlog = 'createUpdateBlog',
+  CreateUpdatePost = 'createUpdatePost',
   CommonLoading = 'commonLoading',
   CommonConfirmation = 'commonConfirmation',
 }

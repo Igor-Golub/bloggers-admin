@@ -3,7 +3,8 @@ import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { DialogTypes, useDialog } from 'shared/ui/dialog';
 import { BaseTableEntity, InputTypes, Listing } from 'shared/ui/listing';
-import { Blog, useBlog } from '../../model';
+import { useBlog } from '../../hooks/useBlog';
+import { Blog } from '../../model';
 import { blogsTableConfig } from './tableConfig.tsx';
 
 export function BlogsTable() {

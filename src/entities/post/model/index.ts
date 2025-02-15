@@ -1,3 +1,3 @@
-export { postSchema } from './schemas';
+export * from './api';
 
 export type { Post } from './schemas';

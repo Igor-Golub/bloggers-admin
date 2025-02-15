@@ -1,6 +1,6 @@
 import { Blog } from 'entities/blog';
-import { Actions } from 'entities/blog/ui/table/cells/actions.tsx';
 import { Column } from 'shared/ui/listing';
+import { ActionsCell } from 'shared/ui/table';
 
 interface Options {
   handleUpdate: (blogId: string) => void;
@@ -69,7 +69,13 @@ export function blogsTableConfig(options: Options): Array<Column<Blog>> {
       bodyCellProps: {
         align: 'center',
       },
-      renderCell: entity => <Actions blogId={entity.id} {...options} />,
+      renderCell: entity => (
+        <ActionsCell
+          entityId={entity.id}
+          handleUpdate={options.handleUpdate}
+          handleDelete={options.handleDelete}
+        />
+      ),
     },
   ];
 }
