@@ -3,7 +3,25 @@ import { ReactNode } from 'react';
 
 export interface BaseTableEntity extends Record<string, string | number | boolean | undefined> {
   id: string;
-  renderIndex: number;
+}
+
+export interface Actions<TableEntity extends BaseTableEntity> extends PaginationActions {
+  onRowClick: (row: TableEntity) => void;
+  onSelect: (selectedRowId: string, selectedRows: string[]) => void;
+}
+
+export interface ListingProps<Entity, TableEntity extends BaseTableEntity>
+  extends Partial<Actions<TableEntity>> {
+  loading?: boolean;
+  listingName?: string;
+  renderData: Entity[];
+  pagination?: Pagination;
+  listingActions?: ReactNode;
+  groupBy?: keyof TableEntity;
+  columns: Column<TableEntity>[];
+  columnsConfigurator?: ColumnsConfiguration;
+  filtersConfiguration?: FiltersConfiguration<TableEntity>[];
+  tableDataAdapter: (entity: Entity, index: number) => TableEntity;
 }
 
 export interface Column<TableEntity> {

@@ -14,10 +14,10 @@ export function BlogsTable() {
 
   const { onOpen: handleOpenCreateBlogDialog } = useDialog(DialogTypes.CreateUpdateBlog);
 
-  const [pagination, setPagination] = useState<Pagination>({ page: 1, limit: 10, total: 0 });
+  const [pagination, setPagination] = useState<Pagination>({ page: 1, pageSize: 10, totalCount: 0 });
 
   const { data, isLoading } = blogApi.useBlogsListQuery({
-    pageSize: pagination.limit,
+    pageSize: pagination.pageSize,
     pageNumber: pagination.page,
   });
 
@@ -47,10 +47,7 @@ export function BlogsTable() {
           Add
         </Button>
       }
-      tableDataAdapter={(entity, index) => ({
-        ...entity,
-        renderIndex: index,
-      })}
+      tableDataAdapter={entity => entity}
       onRowClick={row => {
         navigator(`/blogs/${row.id}`);
       }}

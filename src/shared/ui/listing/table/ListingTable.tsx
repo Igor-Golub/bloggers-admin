@@ -6,10 +6,9 @@ import { BaseTableEntity, Column, ColumnsConfiguration } from '../types';
 import { TableBody } from './TableBody';
 import { TableFooter } from './TableFooter';
 import { TableHeader } from './TableHeader';
-import { NumberCell, SelectCell } from './innerColumns';
+import { SelectCell } from './innerColumns';
 
 interface Props<TableEntity extends BaseTableEntity> {
-  withNumber?: boolean;
   loading: boolean;
   columns: Column<TableEntity>[];
   onRowClick?: (row: TableEntity) => void;
@@ -21,41 +20,27 @@ export const ListingTable = <TableEntity extends BaseTableEntity>({
   columns,
   onSelect,
   loading,
-  withNumber,
   onRowClick,
   columnsConfigurator,
 }: Props<TableEntity>) => {
   const { selectedRows } = useTableManagerContext();
   const { columnsValues } = useColumnsManagerContext<TableEntity>();
 
-  // TODO move columns integration to other place
-
   const innerColumns = useMemo(() => {
-    const numberColumn: Column<TableEntity> = {
-      header: '#',
-      dataKey: 'number',
-      bodyCellProps: { align: 'center' },
-      headerCellProps: { align: 'center' },
-      renderCell: entity => (
-        <NumberCell key={`number_${entity.id}`} entityRenderIndex={entity.renderIndex} />
-      ),
-    };
-
     const selectColum: Column<TableEntity> = {
       header: 'Select',
       dataKey: 'select',
       renderCell: entity => <SelectCell entity={entity} onSelect={onSelect} key={`select_${entity.id}`} />,
     };
 
-    return [numberColumn, selectColum, ...columns]
+    return [selectColum, ...columns]
       .filter(column => {
-        if (column.dataKey === 'number' && !withNumber) return false;
         if (column.dataKey === 'select' && !onSelect) return false;
 
         return true;
       })
       .filter(({ dataKey }) => columnsValues?.[dataKey] ?? true);
-  }, [onSelect, columns, withNumber, columnsValues]);
+  }, [onSelect, columns, columnsValues]);
 
   return (
     <Paper elevation={2} sx={{ flex: 1, overflowX: 'auto', border: '1px solid gray' }}>
