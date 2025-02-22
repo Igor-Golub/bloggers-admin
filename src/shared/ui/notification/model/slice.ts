@@ -1,4 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { rootReducer } from '../../../lib/store/rootReducer.ts';
 import { Notification } from '../types.ts';
 
 const initialState: Record<string, Notification> = {};
@@ -20,11 +21,6 @@ const notificationSlice = createSlice({
       delete state[payload.id];
     },
   },
-});
+}).injectInto(rootReducer);
 
-export const {
-  name: notificationReducerName,
-  actions: notificationActions,
-  reducer: notificationReducer,
-  selectors: notificationSelectors,
-} = notificationSlice;
+export const { actions: notificationActions, selectors: notificationSelectors } = notificationSlice;

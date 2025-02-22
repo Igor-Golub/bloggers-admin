@@ -17,16 +17,15 @@ export const blogApi = baseApi.injectEndpoints({
         method: 'GET',
         params,
       }),
-      providesTags: ['Blog'],
+      providesTags: ['Blogs'],
     }),
     byId: query<Blog, string>({
       query: id => ({
         url: `sa/blogs/${id}`,
         method: 'GET',
       }),
-      transformResponse: response => {
-        return blogSchema.parse(response);
-      },
+      transformResponse: response => blogSchema.parse(response),
+      providesTags: ['Blogs'],
     }),
     create: mutation<Blog, CreateBlogBody>({
       query: body => ({
@@ -34,6 +33,7 @@ export const blogApi = baseApi.injectEndpoints({
         method: 'POST',
         body,
       }),
+      transformResponse: response => blogSchema.parse(response),
     }),
     update: mutation<Blog, Params & UpdateBlogBody>({
       query: ({ id, ...body }) => ({
@@ -41,13 +41,13 @@ export const blogApi = baseApi.injectEndpoints({
         method: 'PUT',
         body,
       }),
+      transformResponse: response => blogSchema.parse(response),
     }),
     delete: mutation<void, string>({
       query: id => ({
         url: `sa/blogs/${id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: ['Blog'],
     }),
   }),
   overrideExisting: true,
