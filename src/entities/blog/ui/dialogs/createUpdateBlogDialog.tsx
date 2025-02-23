@@ -20,9 +20,9 @@ export function CreateUpdateBlogDialog() {
   });
 
   const onSubmit = async (formData: CreateBlogBody) => {
-    console.log(errors);
     dispatch(createBlog(formData));
     onClose();
+    console.log(errors);
   };
 
   return (
