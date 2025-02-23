@@ -35,7 +35,7 @@ export const blogApi = baseApi.injectEndpoints({
       }),
       transformResponse: response => blogSchema.parse(response),
     }),
-    update: mutation<Blog, Params & UpdateBlogBody>({
+    update: mutation<Blog, UpdateBlogBody>({
       query: ({ id, ...body }) => ({
         url: `sa/blogs/${id}`,
         method: 'PUT',

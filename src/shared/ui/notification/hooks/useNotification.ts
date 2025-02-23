@@ -6,16 +6,7 @@ export function useNotification() {
   const dispatch = useAppDispatch();
 
   const onShow = (notification: Omit<Notification, 'id'>) => {
-    dispatch(
-      notificationActions.show({
-        notification: {
-          ...notification,
-          id: Date.now().toString(),
-          type: notification?.type ?? 'success',
-          duration: notification?.duration ?? 2000,
-        },
-      })
-    );
+    dispatch(notificationActions.show({ notification }));
   };
 
   const onHide = (id: string) => {

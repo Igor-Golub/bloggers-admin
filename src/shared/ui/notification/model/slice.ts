@@ -11,10 +11,17 @@ const notificationSlice = createSlice({
     notifications: sliceState => Object.values(sliceState),
   },
   reducers: {
-    show(state, { payload }: PayloadAction<{ notification: Notification }>) {
+    show(state, { payload }: PayloadAction<{ notification: Omit<Notification, 'id'> }>) {
+      const id = Date.now().toString();
+
       return {
         ...state,
-        [payload.notification.id]: payload.notification,
+        [id]: {
+          ...payload.notification,
+          id,
+          type: payload.notification?.type ?? 'success',
+          duration: payload.notification?.duration ?? 2000,
+        },
       };
     },
     hide(state, { payload }: PayloadAction<{ id: string }>) {
