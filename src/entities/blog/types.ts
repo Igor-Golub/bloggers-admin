@@ -1,3 +1,3 @@
-export type CreateUpdateBlogData = {
-  id: string | null;
+export type UpdateBlogData = {
+  id: string;
 };

@@ -3,14 +3,14 @@ import TablePaginationActions from '@mui/material/TablePagination/TablePaginatio
 import { useTableManagerContext } from '../contexts';
 
 export const Pagination = () => {
-  const { page, limit, total, handleChangePage, handleChangeRowsPerPage } = useTableManagerContext();
+  const { page, totalCount, pageSize, handleChangePage, handleChangeRowsPerPage } = useTableManagerContext();
 
   return (
     <TablePagination
       page={page}
-      count={total}
       component="div"
-      rowsPerPage={limit}
+      count={totalCount}
+      rowsPerPage={pageSize}
       rowsPerPageOptions={[5, 10, 25]}
       ActionsComponent={TablePaginationActions}
       onPageChange={(_, page) => handleChangePage(page)}

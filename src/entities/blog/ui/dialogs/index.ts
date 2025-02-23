@@ -1,1 +1,2 @@
-export { CreateUpdateBlogDialog } from './createUpdateBlogDialog.tsx';
+export { CreateBlogDialog } from './createBlogDialog.tsx';
+export { UpdateBlogDialog } from './updateBlogDialog.tsx';

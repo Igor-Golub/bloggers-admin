@@ -1,18 +1,19 @@
-import { Add } from '@mui/icons-material';
-import { Button } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { TableActions } from 'entities/blog/ui/table/tableActions.tsx';
+import { useAppDispatch } from 'shared/hooks';
 import { DialogTypes, useDialog } from 'shared/ui/dialog';
 import { BaseTableEntity, InputTypes, Listing } from 'shared/ui/listing';
-import { Pagination } from 'shared/ui/listing/types.ts';
-import { useBlog } from '../../hooks/useBlog';
-import { Blog, blogApi } from '../../model';
+import type { Pagination } from 'shared/ui/listing/types.ts';
+import { Blog, blogApi, deleteBlog } from '../../model';
 import { blogsTableConfig } from './tableConfig.tsx';
 
 export function BlogsTable() {
   const navigator = useNavigate();
+  const dispatch = useAppDispatch();
 
-  const { onOpen: handleOpenCreateBlogDialog } = useDialog(DialogTypes.CreateUpdateBlog);
+  const { onOpen: handleOpenCreateBlogDialog } = useDialog(DialogTypes.CreateBlog);
+  const { onOpen: handleOpenUpdateBlogDialog } = useDialog(DialogTypes.UpdateBlog);
 
   const [pagination, setPagination] = useState<Pagination>({ page: 1, pageSize: 10, totalCount: 0 });
 
@@ -21,12 +22,15 @@ export function BlogsTable() {
     pageNumber: pagination.page,
   });
 
-  const { handleDelete, handleUpdate } = useBlog();
+  const handleDelete = (id: string) => {
+    dispatch(deleteBlog(id));
+  };
 
-  const columns = blogsTableConfig({
-    handleDelete,
-    handleUpdate,
-  });
+  const handleUpdate = (id: string) => {
+    handleOpenUpdateBlogDialog({ id });
+  };
+
+  const columns = blogsTableConfig({ handleDelete, handleUpdate });
 
   return (
     <Listing<Blog, Blog & BaseTableEntity>
@@ -38,15 +42,7 @@ export function BlogsTable() {
       onPaginationChanged={nextValue => {
         setPagination(prev => ({ ...prev, ...nextValue }));
       }}
-      listingActions={
-        <Button
-          color="inherit"
-          variant="contained"
-          startIcon={<Add />}
-          onClick={() => handleOpenCreateBlogDialog()}>
-          Add
-        </Button>
-      }
+      listingActions={<TableActions handleOpenCreateBlogDialog={handleOpenCreateBlogDialog} />}
       tableDataAdapter={entity => entity}
       onRowClick={row => {
         navigator(`/blogs/${row.id}`);
@@ -58,7 +54,7 @@ export function BlogsTable() {
           inputType: InputTypes.Text,
           inputProps: {
             label: 'Search by name',
-            placeholder: 'Search by name',
+            placeholder: 'Search...',
           },
         },
       ]}

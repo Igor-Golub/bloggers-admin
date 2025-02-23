@@ -5,8 +5,8 @@ import { useAppDispatch } from 'shared/hooks';
 import { CommonFromDialog, DialogTypes, useDialog } from 'shared/ui/dialog';
 import { CreateBlogBody, createBlog, createBlogSchema } from '../../model';
 
-export function CreateUpdateBlogDialog() {
-  const { data, onClose } = useDialog(DialogTypes.CreateUpdateBlog);
+export function CreateBlogDialog() {
+  const { onClose } = useDialog(DialogTypes.CreateBlog);
 
   const dispatch = useAppDispatch();
 
@@ -22,14 +22,13 @@ export function CreateUpdateBlogDialog() {
   const onSubmit = async (formData: CreateBlogBody) => {
     dispatch(createBlog(formData));
     onClose();
-    console.log(errors);
   };
 
   return (
     <CommonFromDialog
       onSubmit={handleSubmit(onSubmit)}
-      title={data?.id ? 'Update Blog' : 'Create Blog'}
-      type={DialogTypes.CreateUpdateBlog}
+      title="Create Blog"
+      type={DialogTypes.CreateBlog}
       content={
         <Stack gap="1rem">
           <TextField
@@ -63,11 +62,7 @@ export function CreateUpdateBlogDialog() {
           />
         </Stack>
       }
-      actions={
-        <Stack>
-          <Button type="submit">Create</Button>
-        </Stack>
-      }
+      actions={<Button type="submit">Create</Button>}
     />
   );
 }
